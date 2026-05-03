@@ -25,3 +25,10 @@
     width: fit-content;
 }
 
+.hljs {
+    border-radius: 14px !important;
+}
+
+pre {
+    white-space: pre-wrap;
+}

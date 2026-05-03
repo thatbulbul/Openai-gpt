@@ -1,6 +1,6 @@
 import "./ChatWindow.css";
 import Chat from "./Chat.jsx";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { MyContext } from "./MyContext.jsx";
 import { Bars } from "react-loader-spinner";
 
@@ -16,6 +16,7 @@ function ChatWindow() {
   } = useContext(MyContext);
 
   const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const getReply = async () => {
     if (!prompt.trim()) return;
@@ -64,6 +65,10 @@ function ChatWindow() {
     }
   };
 
+  const handleProfileClick = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <div className="chatWindow">
       {/* Navbar */}
@@ -71,18 +76,34 @@ function ChatWindow() {
         <span>
           OwnGPT <i className="fa-solid fa-chevron-down"></i>
         </span>
-        <div className="userIconDiv">
-          <span>
-            <i className="fa-regular fa-user"></i>
+        <div className="userIconDiv" onClick={handleProfileClick}>
+          <span className="userIcon">
+            <i className="fa-solid fa-user"></i>
           </span>
         </div>
       </div>
-
-      {/* Loader */}
-      {loading && <Bars color="#f5f2f2" />}
-
+      {isOpen && (
+        <div className="dropDown">
+          <div className="dropDownItem">
+            <i class="fa-solid fa-gear"></i> Settings
+          </div>
+          <div className="dropDownItem">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Upgrade plan
+          </div>
+          <div className="dropDownItem">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i> Log out
+          </div>
+        </div>
+      )}
       {/* Chat Messages */}
       <Chat />
+
+      {/* Loader */}
+      {loading && (
+        <div className="loader">
+          <Bars color="#f5f2f2" height={30} width={30} />
+        </div>
+      )}
 
       {/* Input Section */}
       <div className="chatInput">
@@ -100,7 +121,8 @@ function ChatWindow() {
         </div>
 
         <p className="info">
-          OwnGPT can make mistakes and would not agree. So Always verify important information.
+          OwnGPT can make mistakes and would not agree. So Always verify
+          important information.
         </p>
       </div>
     </div>
